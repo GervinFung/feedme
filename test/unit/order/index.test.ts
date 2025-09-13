@@ -10,10 +10,7 @@ describe('Order util functions', () => {
 		] satisfies Orders;
 
 		const orders = incomingOrders.reduce((orders, newOrder) => {
-			return addNewOrder({
-				orders,
-				newOrder,
-			});
+			return addNewOrder(newOrder.type)(orders);
 		}, [] as Orders);
 
 		expect(orders).toStrictEqual(incomingOrders);
@@ -26,10 +23,7 @@ describe('Order util functions', () => {
 		] satisfies Orders;
 
 		const orders = incomingOrders.reduce((orders, newOrder) => {
-			return addNewOrder({
-				orders,
-				newOrder,
-			});
+			return addNewOrder(newOrder.type)(orders);
 		}, [] as Orders);
 
 		expect(orders).toStrictEqual(incomingOrders.reverse());
@@ -42,10 +36,7 @@ describe('Order util functions', () => {
 		] satisfies Orders;
 
 		const orders = incomingOrders.reduce((orders, newOrder) => {
-			return addNewOrder({
-				orders,
-				newOrder,
-			});
+			return addNewOrder(newOrder.type)(orders);
 		}, [] as Orders);
 
 		expect(orders).toStrictEqual(incomingOrders);

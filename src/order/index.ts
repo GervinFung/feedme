@@ -5,52 +5,62 @@ type Order = Readonly<{
 	id: number;
 	type: OrderType;
 	state: OrderState;
-	assignedBotId?: number;
+	assignedBotId?: undefined | number;
 }>;
 
 type Orders = ReadonlyArray<Order>;
 
-type Bot = Readonly<{
-	id: number;
-	isIdle: boolean;
-	processingOrderId?: number;
-	timer?: ReturnType<typeof setTimeout>;
-}>;
+const addNewOrder = (type: OrderType) => {
+	return (orders: Orders) => {
+		const id = orders.length + 1;
 
-type Bots = ReadonlyArray<Bot>;
+		const newOrder = {
+			type,
+			id,
+			state: 'PENDING',
+			assignedBotId: undefined,
+		} satisfies Order;
 
-const addNewOrder = (
-	orderData: Readonly<{
-		newOrder: Order;
-		orders: Orders;
-	}>
-) => {
-	switch (orderData.newOrder.type) {
-		case 'Normal': {
-			return orderData.orders.concat(orderData.newOrder);
-		}
-		case 'VIP': {
-			const firstPendingNormalOrderIndex = orderData.orders.findIndex(
-				(order) => order.type === 'Normal' && order.state === 'PENDING'
-			);
-
-			if (firstPendingNormalOrderIndex === -1) {
-				return orderData.orders.concat(orderData.newOrder);
+		switch (type) {
+			case 'Normal': {
+				return orders.concat(newOrder);
 			}
+			case 'VIP': {
+				const firstPendingNormalOrderIndex = orders.findIndex(
+					(order) =>
+						order.type === 'Normal' && order.state === 'PENDING'
+				);
 
-			const beforeOrders = orderData.orders.slice(
-				0,
-				firstPendingNormalOrderIndex
-			);
+				if (firstPendingNormalOrderIndex === -1) {
+					return orders.concat(newOrder);
+				}
 
-			const afterOrders = orderData.orders.slice(
-				firstPendingNormalOrderIndex
-			);
+				const beforeOrders = orders.slice(
+					0,
+					firstPendingNormalOrderIndex
+				);
 
-			return beforeOrders.concat(orderData.newOrder, afterOrders);
+				const afterOrders = orders.slice(firstPendingNormalOrderIndex);
+
+				return beforeOrders.concat(newOrder, afterOrders);
+			}
 		}
-	}
+	};
 };
 
-export { addNewOrder };
-export type { Order, Orders, Bot, Bots, OrderType, OrderState };
+const unprocessOrderById = (orderId: undefined | number) => {
+	return (orders: Orders) => {
+		return orders.map((order) => {
+			return order.id !== orderId
+				? order
+				: ({
+						...order,
+						state: 'PENDING',
+						assignedBotId: undefined,
+					} satisfies Order);
+		});
+	};
+};
+
+export { addNewOrder, unprocessOrderById };
+export type { Order, Orders, OrderType, OrderState };
