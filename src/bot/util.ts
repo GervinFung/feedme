@@ -29,7 +29,7 @@ const removeLatestBot = (bots: Bots) => {
 	} as const;
 };
 
-const removeProcesssingOrderFromBot = (completedOrderId: number) => {
+const markBotAsIdle = (completedOrderId: number) => {
 	return (bots: Bots) => {
 		return bots.map((bot) => {
 			if (bot.processingOrderId !== completedOrderId) {
@@ -47,5 +47,5 @@ const removeProcesssingOrderFromBot = (completedOrderId: number) => {
 	};
 };
 
-export { addNewBot, removeLatestBot, removeProcesssingOrderFromBot };
+export { addNewBot, removeLatestBot, markBotAsIdle };
 export type { Bot, Bots };
