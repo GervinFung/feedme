@@ -22,7 +22,7 @@ type Order = PendingOrCompleteOrder | ProcessingOrder;
 
 type Orders = ReadonlyArray<Order>;
 
-const addNewOrder = (type: OrderType, orders: Orders) => {
+const addNewOrder = (orders: Orders, type: OrderType) => {
 	const id = orders.length + 1;
 
 	const newOrder = {
@@ -71,7 +71,7 @@ const setOrderStateById = (state: PendingOrCompleteOrder['state']) => {
 
 const unprocessOrderById = setOrderStateById('PENDING');
 
-const moveOrderToCompleteById = setOrderStateById('COMPLETE');
+const markOrderAsComplete = setOrderStateById('COMPLETE');
 
-export { addNewOrder, unprocessOrderById, moveOrderToCompleteById };
+export { addNewOrder, unprocessOrderById, markOrderAsComplete };
 export type { Orders, OrderType, ProcessingOrder };

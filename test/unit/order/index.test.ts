@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import {
 	addNewOrder,
-	moveOrderToCompleteById,
+	markOrderAsComplete,
 	unprocessOrderById,
 	type Orders,
 	type ProcessingOrder,
@@ -11,9 +11,7 @@ import {
 describe('Order util functions', () => {
 	it('should add all new normal order to the end of the orders', () => {
 		const orders = (['Normal', 'Normal'] as const).reduce(
-			(orders, type) => {
-				return addNewOrder(type, orders);
-			},
+			addNewOrder,
 			[] as Orders
 		);
 
@@ -24,9 +22,10 @@ describe('Order util functions', () => {
 	});
 
 	it('should add new VIP order ahead of all normal orders', () => {
-		const orders = (['Normal', 'VIP'] as const).reduce((orders, type) => {
-			return addNewOrder(type, orders);
-		}, [] as Orders);
+		const orders = (['Normal', 'VIP'] as const).reduce(
+			addNewOrder,
+			[] as Orders
+		);
 
 		expect(orders).toStrictEqual([
 			{ id: 2, type: 'VIP', state: 'PENDING' },
@@ -35,9 +34,10 @@ describe('Order util functions', () => {
 	});
 
 	it('should add all new VIP order to the end of the orders', () => {
-		const orders = (['VIP', 'VIP'] as const).reduce((orders, type) => {
-			return addNewOrder(type, orders);
-		}, [] as Orders);
+		const orders = (['VIP', 'VIP'] as const).reduce(
+			addNewOrder,
+			[] as Orders
+		);
 
 		expect(orders).toStrictEqual([
 			{ id: 1, type: 'VIP', state: 'PENDING' },
@@ -46,9 +46,10 @@ describe('Order util functions', () => {
 	});
 
 	it('should unprocess a processing order by its id', () => {
-		const orders = (['Normal', 'VIP'] as const).reduce((orders, type) => {
-			return addNewOrder(type, orders);
-		}, [] as Orders);
+		const orders = (['Normal', 'VIP'] as const).reduce(
+			addNewOrder,
+			[] as Orders
+		);
 
 		const processingOrders = orders.map((order) => {
 			return {
@@ -67,7 +68,7 @@ describe('Order util functions', () => {
 	});
 
 	it('should set an order to completion', () => {
-		const orders = addNewOrder('Normal', []);
+		const orders = addNewOrder([], 'Normal');
 
 		const processingOrders = orders.map((order) => {
 			return {
@@ -77,7 +78,7 @@ describe('Order util functions', () => {
 			} satisfies ProcessingOrder;
 		});
 
-		const completedOrders = moveOrderToCompleteById(1)(processingOrders);
+		const completedOrders = markOrderAsComplete(1)(processingOrders);
 
 		expect(completedOrders).toStrictEqual([
 			{ id: 1, type: 'Normal', state: 'COMPLETE' },
