@@ -1,7 +1,7 @@
 type Bot = Readonly<{
 	id: number;
-	processingOrderId: undefined | number;
-	timer?: ReturnType<typeof setTimeout>;
+	processingOrderId?: number;
+	timer?: ReturnType<typeof window.setTimeout>;
 }>;
 
 type Bots = ReadonlyArray<Bot>;
@@ -9,7 +9,6 @@ type Bots = ReadonlyArray<Bot>;
 const addNewBot = (bots: Bots) => {
 	return bots.concat({
 		id: bots.length + 1,
-		processingOrderId: undefined,
 	});
 };
 
