@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest';
 
-import { addNewBot, removeLatestBot, type Bots } from '../../../src/bot/util';
+import {
+	addNewBot,
+	removeLatestBot,
+	removeProcesssingOrderFromBot,
+	type Bots,
+} from '../../../src/bot/util';
 
 describe('Bot util functions', () => {
 	it('should add new bot to bot list', () => {
@@ -42,5 +47,20 @@ describe('Bot util functions', () => {
 			isBotProcessingOrder: false,
 			bots: [],
 		});
+	});
+
+	it('should remove order id from bot upon completion of order', () => {
+		const bots = addNewBot([]);
+
+		const processingOrderBots = bots.map((bot) => {
+			return {
+				...bot,
+				processingOrderId: bot.id,
+			};
+		});
+
+		const idleBots = removeProcesssingOrderFromBot(1)(processingOrderBots);
+
+		expect(idleBots).toStrictEqual(bots);
 	});
 });

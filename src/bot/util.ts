@@ -29,5 +29,23 @@ const removeLatestBot = (bots: Bots) => {
 	} as const;
 };
 
-export { addNewBot, removeLatestBot };
+const removeProcesssingOrderFromBot = (completedOrderId: number) => {
+	return (bots: Bots) => {
+		return bots.map((bot) => {
+			if (bot.processingOrderId !== completedOrderId) {
+				return bot;
+			}
+
+			if (bot.timer) {
+				clearTimeout(bot.timer);
+			}
+
+			return {
+				id: bot.id,
+			};
+		});
+	};
+};
+
+export { addNewBot, removeLatestBot, removeProcesssingOrderFromBot };
 export type { Bot, Bots };
