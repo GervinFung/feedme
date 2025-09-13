@@ -1,10 +1,10 @@
-import { Optional } from '@poolofdeath20/util';
+import { Defined } from '@poolofdeath20/util';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
 import App from './app';
 
-const root = Optional.from(document.getElementById('root')).unwrapOrThrow(
+const root = Defined.parse(document.getElementById('root')).orThrow(
 	new Error('There should be an element with id of "root" in index.html')
 );
 

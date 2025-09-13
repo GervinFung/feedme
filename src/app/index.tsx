@@ -1,16 +1,106 @@
 import React from 'react';
-// eslint-disable-next-line import/named
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import HiPage from '../page/hi';
+import {
+	addNewOrder,
+	markOrderAsComplete,
+	unprocessOrderById,
+	type Orders,
+	type OrderType,
+} from '../order/util';
+import OrderByCategory from '../order/list';
+
+import {
+	addNewBot,
+	markBotAsIdle,
+	removeLatestBot,
+	type Bots,
+} from '../bot/util';
+import BotList from '../bot/list';
+import processOrder from '../processor/util';
+import { Defined } from '@poolofdeath20/util';
 
 const App = () => {
+	const [orders, setOrders] = React.useState([] as Orders);
+	const [bots, setBots] = React.useState([] as Bots);
+
+	React.useEffect(() => {
+		const interval = setInterval(() => {
+			const result = processOrder({
+				orders,
+				bots,
+				onComplete: (s) => {
+					setOrders(markOrderAsComplete(s.orderId));
+					setBots(markBotAsIdle(s.orderId));
+				},
+			});
+
+			setOrders(result.orders);
+			setBots(result.bots);
+		}, 0);
+
+		return () => {
+			clearInterval(interval);
+		};
+	}, [bots, orders]);
+
+	const addOrder = (type: OrderType) => {
+		return () => {
+			setOrders(addNewOrder(orders, type));
+		};
+	};
+
+	const addBot = () => {
+		setBots(addNewBot(bots));
+	};
+
+	const removeBot = () => {
+		const updatedBots = removeLatestBot(bots);
+
+		setBots(updatedBots.bots);
+
+		if (updatedBots.isBotProcessingOrder) {
+			clearTimeout(updatedBots.botToRemove.timer);
+
+			const orderId = Defined.parse(
+				updatedBots.botToRemove.processingOrderId
+			).orThrow(
+				new Error(
+					'Bot should have a processing order ID if it is processing an order'
+				)
+			);
+
+			setOrders(unprocessOrderById(orderId));
+		}
+	};
+
 	return (
-		<BrowserRouter>
-			<Routes>
-				<Route element={<HiPage />} path="/" />
-			</Routes>
-		</BrowserRouter>
+		<div
+			style={{
+				fontFamily: 'monospace',
+				display: 'flex',
+				flexDirection: 'column',
+				justifyContent: 'center',
+				alignItems: 'center',
+			}}
+		>
+			<h1>FeedMe Order Controller</h1>
+
+			<div
+				style={{
+					display: 'flex',
+					gap: 16,
+				}}
+			>
+				<button onClick={addOrder('Normal')}>New Normal Order</button>
+				<button onClick={addOrder('VIP')}>New VIP Order</button>
+				<button onClick={addBot}>+ Bot</button>
+				<button onClick={removeBot}>- Bot</button>
+			</div>
+
+			<OrderByCategory orders={orders} />
+
+			<BotList bots={bots} orders={orders} />
+		</div>
 	);
 };
 
