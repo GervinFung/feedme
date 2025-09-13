@@ -18,7 +18,6 @@ const addNewOrder = (type: OrderType) => {
 			type,
 			id,
 			state: 'PENDING',
-			assignedBotId: undefined,
 		} satisfies Order;
 
 		switch (type) {
