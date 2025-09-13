@@ -3,13 +3,13 @@ import { describe, expect, it } from 'vitest';
 import {
 	addNewBot,
 	removeLatestBot,
-	removeProcesssingOrderFromBot,
+	markBotAsIdle,
 	type Bots,
 } from '../../../src/bot/util';
 
 describe('Bot util functions', () => {
 	it('should add new bot to bot list', () => {
-		const incomingBots = [{ id: 1 }, { id: 2 }] satisfies Bots;
+		const incomingBots = [{ id: 1 }, { id: 2 }];
 
 		const bots = incomingBots.reduce(addNewBot, [] as Bots);
 
@@ -17,7 +17,7 @@ describe('Bot util functions', () => {
 	});
 
 	it('should remove latest bot from bot list and return indicator that bot is not processing any order', () => {
-		const incomingBots = [{ id: 1 }, { id: 2 }] satisfies Bots;
+		const incomingBots = [{ id: 1 }, { id: 2 }];
 
 		const bots = incomingBots.reduce(addNewBot, [] as Bots).map((bot) => {
 			if (bot.id === 1) {
@@ -59,7 +59,7 @@ describe('Bot util functions', () => {
 			};
 		});
 
-		const idleBots = removeProcesssingOrderFromBot(1)(processingOrderBots);
+		const idleBots = markBotAsIdle(1)(processingOrderBots);
 
 		expect(idleBots).toStrictEqual(bots);
 	});
