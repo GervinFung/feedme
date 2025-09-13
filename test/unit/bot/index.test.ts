@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { addNewBot, removeLatestBot, type Bots } from '../../../src/bot';
+import { addNewBot, removeLatestBot, type Bots } from '../../../src/bot/util';
 
 describe('Bot util functions', () => {
 	it('should add new bot to bot list', () => {

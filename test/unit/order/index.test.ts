@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { addNewOrder, type Orders } from '../../../src/order';
+import { addNewOrder, type Orders } from '../../../src/order/util';
 
 describe('Order util functions', () => {
 	it('should add all new normal order to the end of the orders', () => {
