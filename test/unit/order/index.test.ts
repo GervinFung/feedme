@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import {
 	addNewOrder,
+	moveOrderToCompleteById,
 	unprocessOrderById,
 	type Orders,
 	type ProcessingOrder,
@@ -62,6 +63,24 @@ describe('Order util functions', () => {
 		expect(updatedOrders).toStrictEqual([
 			{ id: 2, type: 'VIP', state: 'PENDING' },
 			{ id: 1, type: 'Normal', state: 'PROCESSING', assignedBotId: 1 },
+		]);
+	});
+
+	it('should set an order to completion', () => {
+		const orders = addNewOrder('Normal', []);
+
+		const processingOrders = orders.map((order) => {
+			return {
+				...order,
+				state: 'PROCESSING',
+				assignedBotId: order.id,
+			} satisfies ProcessingOrder;
+		});
+
+		const completedOrders = moveOrderToCompleteById(1)(processingOrders);
+
+		expect(completedOrders).toStrictEqual([
+			{ id: 1, type: 'Normal', state: 'COMPLETE' },
 		]);
 	});
 });

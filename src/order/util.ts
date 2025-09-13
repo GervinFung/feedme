@@ -53,19 +53,25 @@ const addNewOrder = (type: OrderType, orders: Orders) => {
 	}
 };
 
-const unprocessOrderById = (orderId: number) => {
-	return (orders: Orders) => {
-		return orders.map((order) => {
-			return order.id !== orderId
-				? order
-				: ({
-						id: order.id,
-						type: order.type,
-						state: 'PENDING',
-					} satisfies PendingOrCompleteOrder);
-		});
+const setOrderStateById = (state: PendingOrCompleteOrder['state']) => {
+	return (orderId: number) => {
+		return (orders: Orders) => {
+			return orders.map((order) => {
+				return order.id !== orderId
+					? order
+					: ({
+							id: order.id,
+							type: order.type,
+							state,
+						} satisfies PendingOrCompleteOrder);
+			});
+		};
 	};
 };
 
-export { addNewOrder, unprocessOrderById };
+const unprocessOrderById = setOrderStateById('PENDING');
+
+const moveOrderToCompleteById = setOrderStateById('COMPLETE');
+
+export { addNewOrder, unprocessOrderById, moveOrderToCompleteById };
 export type { Orders, OrderType, ProcessingOrder };
