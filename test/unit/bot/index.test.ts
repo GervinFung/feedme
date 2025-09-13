@@ -5,8 +5,8 @@ import { addNewBot, removeLatestBot, type Bots } from '../../../src/bot/util';
 describe('Bot util functions', () => {
 	it('should add new bot to bot list', () => {
 		const incomingBots = [
-			{ id: 1, isIdle: true },
-			{ id: 2, isIdle: true },
+			{ id: 1, processingOrderId: undefined },
+			{ id: 2, processingOrderId: undefined },
 		] satisfies Bots;
 
 		const bots = incomingBots.reduce(addNewBot, [] as Bots);
@@ -16,8 +16,8 @@ describe('Bot util functions', () => {
 
 	it('should remove latest bot from bot list and return indicator that bot is not processing any order', () => {
 		const incomingBots = [
-			{ id: 1, isIdle: true },
-			{ id: 2, isIdle: true },
+			{ id: 1, processingOrderId: undefined },
+			{ id: 2, processingOrderId: undefined },
 		] satisfies Bots;
 
 		const bots = incomingBots.reduce(addNewBot, [] as Bots).map((bot) => {
@@ -27,7 +27,6 @@ describe('Bot util functions', () => {
 
 			return {
 				...bot,
-				isIdle: true,
 				processingOrderId: 1,
 			};
 		});

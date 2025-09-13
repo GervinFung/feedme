@@ -1,8 +1,6 @@
 type Bot = Readonly<{
 	id: number;
-	// remove isIdle bcoz derivable
-	isIdle: boolean;
-	processingOrderId?: number;
+	processingOrderId: undefined | number;
 	timer?: ReturnType<typeof setTimeout>;
 }>;
 
@@ -11,7 +9,7 @@ type Bots = ReadonlyArray<Bot>;
 const addNewBot = (bots: Bots) => {
 	return bots.concat({
 		id: bots.length + 1,
-		isIdle: true,
+		processingOrderId: undefined,
 	});
 };
 
