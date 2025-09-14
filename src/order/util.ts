@@ -56,7 +56,7 @@ const updatePendingOrderStateByIdTo = (
 ) => {
 	return (orderId: number) => {
 		return (orders: Orders) => {
-			return orders.map((order) => {
+			const updatedOrders = orders.map((order) => {
 				if (order.id !== orderId) {
 					return order;
 				}
@@ -74,6 +74,16 @@ const updatePendingOrderStateByIdTo = (
 						} satisfies PendingOrCompleteOrder;
 					}
 				}
+			});
+
+			return updatedOrders.toSorted((a, b) => {
+				if (a.type === 'VIP' && b.type === 'Normal') {
+					return -1;
+				}
+				if (a.type === 'Normal' && b.type === 'VIP') {
+					return 1;
+				}
+				return 0;
 			});
 		};
 	};
