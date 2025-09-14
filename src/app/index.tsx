@@ -12,7 +12,7 @@ import OrderByCategory from '../order/list';
 import {
 	addNewOrder,
 	markOrderAsComplete,
-	unprocessOrderById,
+	markOrderAsPending,
 	type Orders,
 	type OrderType,
 } from '../order/util';
@@ -68,7 +68,7 @@ const App = () => {
 				)
 			);
 
-			setOrders(unprocessOrderById(orderId));
+			setOrders(markOrderAsPending(orderId));
 		}
 	};
 

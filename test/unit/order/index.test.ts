@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import {
 	addNewOrder,
 	markOrderAsComplete,
-	unprocessOrderById,
+	markOrderAsPending,
 	type Orders,
 	type ProcessingOrder,
 } from '../../../src/order/util';
@@ -59,7 +59,7 @@ describe('Order util functions', () => {
 			} satisfies ProcessingOrder;
 		});
 
-		const updatedOrders = unprocessOrderById(2)(processingOrders);
+		const updatedOrders = markOrderAsPending(2)(processingOrders);
 
 		expect(updatedOrders).toStrictEqual([
 			{ id: 2, type: 'VIP', state: 'PENDING' },
