@@ -79,7 +79,7 @@ const processOrder = (
 						() => {
 							parameters.onComplete(order.id);
 						},
-						process.env['NODE_ENV'] === 'test' ? 2_000 : 10_000
+						import.meta.env.NODE_ENV === 'test' ? 2_000 : 10_000
 					),
 				};
 			});
