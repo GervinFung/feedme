@@ -33,18 +33,15 @@ describe('Bot util functions', () => {
 		const bot2 = removeLatestBot(bots);
 
 		expect(bot2).toStrictEqual({
-			botToRemove: {
-				...incomingBots.at(1),
-				processingOrderId: 1,
-			},
 			bots: [incomingBots.at(0)],
+			orderId: 1,
 		});
 
 		const bot1 = removeLatestBot(bot2.bots);
 
 		expect(bot1).toStrictEqual({
-			botToRemove: undefined,
 			bots: [],
+			orderId: undefined,
 		});
 	});
 
