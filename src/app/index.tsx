@@ -90,10 +90,18 @@ const App = () => {
 					gap: 16,
 				}}
 			>
-				<button onClick={addOrder('Normal')}>New Normal Order</button>
-				<button onClick={addOrder('VIP')}>New VIP Order</button>
-				<button onClick={addBot}>+ Bot</button>
-				<button onClick={removeBot}>- Bot</button>
+				<button onClick={addOrder('Normal')} type="button">
+					New Normal Order
+				</button>
+				<button onClick={addOrder('VIP')} type="button">
+					New VIP Order
+				</button>
+				<button onClick={addBot} type="button">
+					+ Bot
+				</button>
+				<button onClick={removeBot} type="button">
+					- Bot
+				</button>
 			</div>
 
 			<OrderByCategory orders={orders} />

@@ -17,6 +17,7 @@ describe('Processor util functions', () => {
 		const bots = incomingBots.reduce(addNewBot, [] as Bots);
 
 		const mocker = {
+			// eslint-disable-next-line @typescript-eslint/no-empty-function
 			onComplete: () => {},
 		};
 
