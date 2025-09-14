@@ -40,4 +40,4 @@ const markBotAsIdle = (completedOrderId: number) => {
 };
 
 export { addNewBot, removeLatestBot, markBotAsIdle };
-export type { Bot, Bots };
+export type { Bots };

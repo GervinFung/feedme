@@ -2,5 +2,4 @@ node_modules
 build
 .tscache
 src/vite-env.d.ts
-env.d.ts
 .prettierrc
