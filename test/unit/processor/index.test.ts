@@ -54,7 +54,7 @@ describe('Processor util functions', () => {
 		});
 
 		await sleepInSeconds({
-			seconds: 3,
+			seconds: 2,
 		});
 
 		expect(spy).toHaveBeenCalledTimes(2);
