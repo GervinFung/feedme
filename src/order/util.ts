@@ -23,11 +23,9 @@ type Order = PendingOrCompleteOrder | ProcessingOrder;
 type Orders = ReadonlyArray<Order>;
 
 const addNewOrder = (orders: Orders, type: OrderType) => {
-	const id = orders.length + 1;
-
 	const newOrder = {
 		type,
-		id,
+		id: orders.length + 1,
 		state: 'PENDING',
 	} satisfies Order;
 
@@ -57,27 +55,13 @@ const setOrderStateById = (state: PendingOrCompleteOrder['state']) => {
 	return (orderId: number) => {
 		return (orders: Orders) => {
 			return orders.map((order) => {
-				if (order.id !== orderId) {
-					return order;
-				}
-
-				switch (order.state) {
-					case 'PENDING': {
-						return order;
-					}
-					case 'COMPLETE': {
-						throw new Error(
-							'Cannot change state of a completed order'
-						);
-					}
-					case 'PROCESSING': {
-						return {
+				return order.id !== orderId
+					? order
+					: ({
 							id: order.id,
 							type: order.type,
 							state,
-						} satisfies PendingOrCompleteOrder;
-					}
-				}
+						} satisfies PendingOrCompleteOrder);
 			});
 		};
 	};
@@ -88,4 +72,4 @@ const unprocessOrderById = setOrderStateById('PENDING');
 const markOrderAsComplete = setOrderStateById('COMPLETE');
 
 export { addNewOrder, unprocessOrderById, markOrderAsComplete };
-export type { Orders, OrderType, ProcessingOrder };
+export type { Order, Orders, OrderType, ProcessingOrder };

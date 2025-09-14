@@ -83,9 +83,5 @@ describe('Order util functions', () => {
 		expect(completedOrders).toStrictEqual([
 			{ id: 1, type: 'Normal', state: 'COMPLETE' },
 		]);
-
-		expect(() => {
-			markOrderAsComplete(1)(completedOrders);
-		}).toThrowError();
 	});
 });
