@@ -83,11 +83,17 @@ const processOrder = (
 					),
 				};
 			});
-		}, parameters.bots);
+		}, unoccupiedBots);
 
 	return {
 		orders: updatedOrders,
-		bots: updatedBots,
+		bots: parameters.bots.map((bot) => {
+			return (
+				updatedBots.find(({ id }) => {
+					return id === bot.id;
+				}) ?? bot
+			);
+		}),
 	};
 };
 
