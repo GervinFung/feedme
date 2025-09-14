@@ -57,13 +57,27 @@ const setOrderStateById = (state: PendingOrCompleteOrder['state']) => {
 	return (orderId: number) => {
 		return (orders: Orders) => {
 			return orders.map((order) => {
-				return order.id !== orderId
-					? order
-					: ({
+				if (order.id !== orderId) {
+					return order;
+				}
+
+				switch (order.state) {
+					case 'PENDING': {
+						return order;
+					}
+					case 'COMPLETE': {
+						throw new Error(
+							'Cannot change state of a completed order'
+						);
+					}
+					case 'PROCESSING': {
+						return {
 							id: order.id,
 							type: order.type,
 							state,
-						} satisfies PendingOrCompleteOrder);
+						} satisfies PendingOrCompleteOrder;
+					}
+				}
 			});
 		};
 	};
