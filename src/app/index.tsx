@@ -1,4 +1,3 @@
-import { Defined } from '@poolofdeath20/util';
 import React from 'react';
 
 import BotList from '../bot/list';
@@ -57,18 +56,8 @@ const App = () => {
 
 		setBots(updatedBots.bots);
 
-		if (updatedBots.botToRemove) {
-			clearTimeout(updatedBots.botToRemove.timer);
-
-			const orderId = Defined.parse(
-				updatedBots.botToRemove.processingOrderId
-			).orThrow(
-				new Error(
-					'Bot should have a processing order ID if it is processing an order'
-				)
-			);
-
-			setOrders(markOrderAsPending(orderId));
+		if (updatedBots.orderId) {
+			setOrders(markOrderAsPending(updatedBots.orderId));
 		}
 	};
 

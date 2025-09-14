@@ -15,8 +15,12 @@ const addNewBot = (bots: Bots) => {
 const removeLatestBot = (bots: Bots) => {
 	const botToRemove = bots.at(-1);
 
+	if (botToRemove?.processingOrderId) {
+		clearTimeout(botToRemove.timer);
+	}
+
 	return {
-		botToRemove: botToRemove?.processingOrderId ? botToRemove : undefined,
+		orderId: botToRemove?.processingOrderId ?? undefined,
 		bots: bots.slice(0, -1),
 	};
 };
