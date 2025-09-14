@@ -1,10 +1,6 @@
 import { Defined } from '@poolofdeath20/util';
-import { markBotAsIdle, type Bots } from '../bot/util';
-import {
-	markOrderAsComplete,
-	type Orders,
-	type ProcessingOrder,
-} from '../order/util';
+import { type Bots } from '../bot/util';
+import { type Orders, type ProcessingOrder } from '../order/util';
 
 const assignBotsToOrders = (orders: Orders, bots: Bots) => {
 	const pendingOrderIndex = orders.findIndex(
@@ -38,13 +34,7 @@ const processOrder = (
 	parameters: Readonly<{
 		orders: Orders;
 		bots: Bots;
-		onComplete: (
-			parameters: Readonly<{
-				orderId: number;
-				orders: Orders;
-				bots: Bots;
-			}>
-		) => void;
+		onComplete: (orderId: number) => void;
 	}>
 ) => {
 	const pendingOrders = parameters.orders.filter(
@@ -84,15 +74,12 @@ const processOrder = (
 				return {
 					...bot,
 					processingOrderId: order.id,
-					timer: setTimeout(() => {
-						parameters.onComplete({
-							orderId: order.id,
-							orders: markOrderAsComplete(order.id)(
-								updatedOrders
-							),
-							bots: markBotAsIdle(order.id)(updatedBots),
-						});
-					}, 3_000),
+					timer: setTimeout(
+						() => {
+							parameters.onComplete(order.id);
+						},
+						process.env['NODE_ENV'] === 'test' ? 2_000 : 10_000
+					),
 				};
 			});
 		}, parameters.bots);

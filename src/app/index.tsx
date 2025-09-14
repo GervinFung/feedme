@@ -28,9 +28,9 @@ const App = () => {
 			const result = processOrder({
 				orders,
 				bots,
-				onComplete: (s) => {
-					setOrders(markOrderAsComplete(s.orderId));
-					setBots(markBotAsIdle(s.orderId));
+				onComplete: (orderId) => {
+					setOrders(markOrderAsComplete(orderId));
+					setBots(markBotAsIdle(orderId));
 				},
 			});
 
@@ -58,7 +58,7 @@ const App = () => {
 
 		setBots(updatedBots.bots);
 
-		if (updatedBots.isBotProcessingOrder) {
+		if (updatedBots.botToRemove) {
 			clearTimeout(updatedBots.botToRemove.timer);
 
 			const orderId = Defined.parse(
