@@ -8,7 +8,7 @@ build-development:
 	pnpm vite build --mode development
 
 start-production:
-	pnpm vite build --mode production
+	pnpm vite preview
 
 build-production:
 	pnpm vite build --mode production
