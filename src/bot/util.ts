@@ -15,18 +15,10 @@ const addNewBot = (bots: Bots) => {
 const removeLatestBot = (bots: Bots) => {
 	const botToRemove = bots.at(-1);
 
-	if (botToRemove?.processingOrderId) {
-		return {
-			isBotProcessingOrder: true,
-			botToRemove,
-			bots: bots.slice(0, -1),
-		} as const;
-	}
-
 	return {
-		isBotProcessingOrder: false,
+		botToRemove: botToRemove?.processingOrderId ? botToRemove : undefined,
 		bots: bots.slice(0, -1),
-	} as const;
+	};
 };
 
 const markBotAsIdle = (completedOrderId: number) => {

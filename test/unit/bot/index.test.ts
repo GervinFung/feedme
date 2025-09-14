@@ -33,7 +33,6 @@ describe('Bot util functions', () => {
 		const bot2 = removeLatestBot(bots);
 
 		expect(bot2).toStrictEqual({
-			isBotProcessingOrder: true,
 			botToRemove: {
 				...incomingBots.at(1),
 				processingOrderId: 1,
@@ -44,7 +43,7 @@ describe('Bot util functions', () => {
 		const bot1 = removeLatestBot(bot2.bots);
 
 		expect(bot1).toStrictEqual({
-			isBotProcessingOrder: false,
+			botToRemove: undefined,
 			bots: [],
 		});
 	});
