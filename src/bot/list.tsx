@@ -1,5 +1,6 @@
 import type { Bots } from './util';
 import type { Orders } from '../order/util';
+
 import { Defined } from '@poolofdeath20/util';
 
 const BotList = (
