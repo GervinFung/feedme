@@ -18,7 +18,7 @@ const BotList = (
 				<ul style={{ listStyle: 'none', padding: 0 }}>
 					{props.bots.map((bot) => {
 						if (!bot.processingOrderId) {
-							return <li key={bot.id}>IDLE</li>;
+							return <li key={bot.id}>Bot #{bot.id} IDLE</li>;
 						}
 
 						const order = Defined.parse(
