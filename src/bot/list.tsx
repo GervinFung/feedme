@@ -1,5 +1,6 @@
 import type { Bots } from './util';
 import type { Orders } from '../order/util';
+import { Defined } from '@poolofdeath20/util';
 
 const BotList = (
 	props: Readonly<{
@@ -15,18 +16,24 @@ const BotList = (
 			) : (
 				<ul style={{ listStyle: 'none', padding: 0 }}>
 					{props.bots.map((bot) => {
-						const order = props.orders.find((order) => {
-							return order.id === bot.processingOrderId;
-						});
+						if (!bot.processingOrderId) {
+							return <li key={bot.id}>IDLE</li>;
+						}
+
+						const order = Defined.parse(
+							props.orders.find((order) => {
+								return order.id === bot.processingOrderId;
+							})
+						).orThrow(
+							new Error(
+								`Order with ID ${bot.processingOrderId} not found`
+							)
+						);
 
 						return (
 							<li key={bot.id}>
 								Bot #{bot.id} -{' '}
-								{!bot.processingOrderId
-									? 'IDLE'
-									: order
-										? `PROCESSING Order #${order.id} (${order.type})`
-										: 'PROCESSING'}
+								{`PROCESSING Order #${order.id} (${order.type})`}
 							</li>
 						);
 					})}
