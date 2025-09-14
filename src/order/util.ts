@@ -36,9 +36,9 @@ const addNewOrder = (orders: Orders, type: OrderType) => {
 			return orders.concat(newOrder);
 		}
 		case 'VIP': {
-			const firstPendingNormalOrderIndex = orders.findIndex(
-				(order) => order.type === 'Normal' && order.state === 'PENDING'
-			);
+			const firstPendingNormalOrderIndex = orders.findIndex((order) => {
+				return order.type === 'Normal' && order.state === 'PENDING';
+			});
 
 			if (firstPendingNormalOrderIndex === -1) {
 				return orders.concat(newOrder);

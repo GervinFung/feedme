@@ -1,5 +1,5 @@
-import type { Orders } from '../order/util';
 import type { Bots } from './util';
+import type { Orders } from '../order/util';
 
 const BotList = (
 	props: Readonly<{

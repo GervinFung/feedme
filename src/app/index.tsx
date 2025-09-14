@@ -1,5 +1,14 @@
+import { Defined } from '@poolofdeath20/util';
 import React from 'react';
 
+import BotList from '../bot/list';
+import {
+	addNewBot,
+	markBotAsIdle,
+	removeLatestBot,
+	type Bots,
+} from '../bot/util';
+import OrderByCategory from '../order/list';
 import {
 	addNewOrder,
 	markOrderAsComplete,
@@ -7,17 +16,7 @@ import {
 	type Orders,
 	type OrderType,
 } from '../order/util';
-import OrderByCategory from '../order/list';
-
-import {
-	addNewBot,
-	markBotAsIdle,
-	removeLatestBot,
-	type Bots,
-} from '../bot/util';
-import BotList from '../bot/list';
 import processOrder from '../processor/util';
-import { Defined } from '@poolofdeath20/util';
 
 const App = () => {
 	const [orders, setOrders] = React.useState([] as Orders);

@@ -1,9 +1,9 @@
+import { sleepInSeconds } from '@poolofdeath20/util';
 import { describe, expect, it, vi } from 'vitest';
 
-import { addNewOrder, type Orders } from '../../../src/order/util';
 import { addNewBot, type Bots } from '../../../src/bot/util';
+import { addNewOrder, type Orders } from '../../../src/order/util';
 import processOrder from '../../../src/processor/util';
-import { sleepInSeconds } from '@poolofdeath20/util';
 
 describe('Processor util functions', () => {
 	it('should assign bot to process order', async () => {

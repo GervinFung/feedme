@@ -37,22 +37,22 @@ const OrderByCategory = (
 	return (
 		<div style={{ display: 'flex', gap: 32 }}>
 			<OrderList
+				orders={props.orders.filter((order) => {
+					return order.state === 'PENDING';
+				})}
 				title="PENDING"
-				orders={props.orders.filter(
-					(order) => order.state === 'PENDING'
-				)}
 			/>
 			<OrderList
+				orders={props.orders.filter((order) => {
+					return order.state === 'PROCESSING';
+				})}
 				title="PROCESSING"
-				orders={props.orders.filter(
-					(order) => order.state === 'PROCESSING'
-				)}
 			/>
 			<OrderList
+				orders={props.orders.filter((order) => {
+					return order.state === 'COMPLETE';
+				})}
 				title="COMPLETE"
-				orders={props.orders.filter(
-					(order) => order.state === 'COMPLETE'
-				)}
 			/>
 		</div>
 	);

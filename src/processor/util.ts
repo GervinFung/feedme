@@ -1,11 +1,12 @@
 import { Defined } from '@poolofdeath20/util';
+
 import { type Bots } from '../bot/util';
 import { type Orders, type ProcessingOrder } from '../order/util';
 
 const assignBotsToOrders = (orders: Orders, bots: Bots) => {
-	const pendingOrderIndex = orders.findIndex(
-		(order) => order.state === 'PENDING'
-	);
+	const pendingOrderIndex = orders.findIndex((order) => {
+		return order.state === 'PENDING';
+	});
 
 	if (pendingOrderIndex === -1 || !bots.length) {
 		return orders;
@@ -37,9 +38,9 @@ const processOrder = (
 		onComplete: (orderId: number) => void;
 	}>
 ) => {
-	const pendingOrders = parameters.orders.filter(
-		(order) => order.state === 'PENDING'
-	);
+	const pendingOrders = parameters.orders.filter((order) => {
+		return order.state === 'PENDING';
+	});
 
 	if (!pendingOrders.length) {
 		return {
@@ -48,9 +49,9 @@ const processOrder = (
 		};
 	}
 
-	const unoccupiedBots = parameters.bots.filter(
-		(bot) => !bot.processingOrderId
-	);
+	const unoccupiedBots = parameters.bots.filter((bot) => {
+		return !bot.processingOrderId;
+	});
 
 	if (!unoccupiedBots.length) {
 		return {
