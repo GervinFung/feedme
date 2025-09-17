@@ -76,15 +76,22 @@ const updatePendingOrderStateByIdTo = (
 				}
 			});
 
-			return updatedOrders.toSorted((a, b) => {
-				if (a.type === 'VIP' && b.type === 'Normal') {
-					return -1;
+			switch (state) {
+				case 'COMPLETE': {
+					return updatedOrders;
 				}
-				if (a.type === 'Normal' && b.type === 'VIP') {
-					return 1;
+				case 'PENDING': {
+					return updatedOrders.toSorted((a, b) => {
+						if (a.type === 'VIP' && b.type === 'Normal') {
+							return -1;
+						}
+						if (a.type === 'Normal' && b.type === 'VIP') {
+							return 1;
+						}
+						return 0;
+					});
 				}
-				return 0;
-			});
+			}
 		};
 	};
 };
