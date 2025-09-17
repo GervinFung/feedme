@@ -21,25 +21,30 @@ const App = () => {
 	const [orders, setOrders] = React.useState([] as Orders);
 	const [bots, setBots] = React.useState([] as Bots);
 
+	const joinedOrders = orders
+		.map((order) => {
+			return `${order.id}-${order.type}-${order.state}`;
+		})
+		.join(', ');
+	const joinedBots = bots
+		.map((bot) => {
+			return `${bot.id}-${bot.timer}-${bot.processingOrderId}`;
+		})
+		.join(', ');
+
 	React.useEffect(() => {
-		const interval = setInterval(() => {
-			const result = processOrder({
-				orders,
-				bots,
-				onComplete: (orderId) => {
-					setOrders(markOrderAsComplete(orderId));
-					setBots(markBotAsIdle(orderId));
-				},
-			});
+		const result = processOrder({
+			orders,
+			bots,
+			onComplete: (orderId) => {
+				setOrders(markOrderAsComplete(orderId));
+				setBots(markBotAsIdle(orderId));
+			},
+		});
 
-			setOrders(result.orders);
-			setBots(result.bots);
-		}, 0);
-
-		return () => {
-			clearInterval(interval);
-		};
-	}, [bots, orders]);
+		setOrders(result.orders);
+		setBots(result.bots);
+	}, [joinedOrders, joinedBots]);
 
 	const addOrder = (type: OrderType) => {
 		return () => {
